@@ -34,6 +34,10 @@ export default {
   components: {
     tab,
     tabItem
+  },
+  data(){
+    return {
+    }
   }
 };
 </script>
