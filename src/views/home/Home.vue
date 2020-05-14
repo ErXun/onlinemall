@@ -6,7 +6,69 @@
     <home-swiper :banners="banners" ref="mobileSwipersRef"></home-swiper>
     <home-recommend-view :recommendLists="recommendLists"></home-recommend-view>
     <feature-view></feature-view>
+    <product-tabbar :title="['流行','新款','精选']" ref="productTabbarRef"></product-tabbar>
     <ul>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+       <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+       <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+
       <li></li>
       <li></li>
       <li></li>
@@ -23,6 +85,8 @@
 
 <script>
 import NavBar from "components/common/navBar/NavBar";
+import ProductTabbar from "components/context/productTabbar";
+
 import HomeSwiper from "./components/HomeSwiper";
 import HomeRecommendView from "./components/HomeRecommendView";
 import FeatureView from "./components/FeatureView";
@@ -33,7 +97,8 @@ export default {
     NavBar,
     HomeSwiper,
     HomeRecommendView,
-    FeatureView
+    FeatureView,
+    ProductTabbar
   },
   data() {
     return {
@@ -57,16 +122,16 @@ export default {
 };
 </script>
 <style scoped>
-#home{
+#home {
   padding-top: 44px;
 }
 .nav_bar {
   background-color: #ff8198;
   color: #fff;
   position: fixed;
-  top:0;
-  left:0;
-  right:0;
-  z-index:9;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9;
 }
 </style>

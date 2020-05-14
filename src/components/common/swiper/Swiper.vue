@@ -100,7 +100,7 @@ export default {
         if (this.index >= this.slideCount + 1) {
           this.index = 1;
           this.movePosition(-this.index * this.swiperWidth);
-        } else if (this.currentIndex <= 0) {
+        } else if (this.index <= 0) {
           this.index = this.slideCount;
           this.movePosition(-this.index * this.swiperWidth);
         }

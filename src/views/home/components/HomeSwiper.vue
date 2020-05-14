@@ -11,8 +11,9 @@
 </template>
 
 <script>
-import Swiper from "components/common/swiper/Swiper";
-import SwiperItem from "components/common/swiper/SwiperItem";
+// import Swiper from "components/common/swiper/Swiper";
+// import SwiperItem from "components/common/swiper/SwiperItem";
+ import {Swiper, SwiperItem} from 'components/common/swiper/'
 export default {
   name: "HomeSwiper",
   components: {
