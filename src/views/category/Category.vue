@@ -115,7 +115,25 @@ export default {
     };
   },
   mounted() {
-    this.scroll = new betterScroll(this.$refs.viewRef, {});
+    /**
+     * probeType 监听
+     * 0,1都不侦测实时位置
+     * 2,在手指滚动的过程中侦测，手指离开后的惯性滚动过程中不侦测
+     * 3，只要是滚动就侦测
+     */
+    this.scroll = new betterScroll(this.$refs.viewRef, {
+      probeType: 3,
+      click: true,
+      pullUpLoad:true // 开启下拉加载更多
+    });
+    this.scroll.on('scroll', (position) => {
+      // console.log(position); //实时打印位置
+    });
+    this.scroll.on('pullingUp',() => {
+      console.log('下拉加载更多');
+      // 发送网络请求，加载更多数据
+      this.scroll.finishPullUp()
+    })
   }
 };
 </script>

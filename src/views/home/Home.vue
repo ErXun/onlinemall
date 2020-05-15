@@ -3,11 +3,17 @@
     <nav-bar class="nav_bar">
       <div slot="center">购物街</div>
     </nav-bar>
-    <home-swiper :banners="banners" ref="mobileSwipersRef"></home-swiper>
-    <home-recommend-view :recommendLists="recommendLists"></home-recommend-view>
-    <feature-view></feature-view>
-    <product-tabbar :title="['流行','新款','精选']" ref="productTabbarRef" @clickTab="clickTab"></product-tabbar>
-    <product-list :goodLists="goodsItem"></product-list>
+    <scroll class="scrollContent">
+      <home-swiper :banners="banners" ref="mobileSwipersRef" />
+      <home-recommend-view :recommendLists="recommendLists" />
+      <feature-view />
+      <product-tabbar
+        :title="['流行','新款','精选']"
+        ref="productTabbarRef"
+        @clickTab="clickTab"
+      />
+      <product-list :goodLists="goodsItem" />
+    </scroll>
   </div>
 </template>
 
@@ -15,6 +21,7 @@
 import NavBar from "components/common/navBar/NavBar";
 import ProductTabbar from "components/context/productTabbar";
 import ProductList from "components/context/productList/ProductList";
+import Scroll from "components/common/scroll/Scroll";
 
 import HomeSwiper from "./components/HomeSwiper";
 import HomeRecommendView from "./components/HomeRecommendView";
@@ -28,7 +35,8 @@ export default {
     HomeRecommendView,
     FeatureView,
     ProductTabbar,
-    ProductList
+    ProductList,
+    Scroll
   },
   data() {
     return {
@@ -44,7 +52,7 @@ export default {
   },
   computed: {
     goodsItem() {
-      return this.goods[this.currentType].list
+      return this.goods[this.currentType].list;
     }
   },
   created() {
@@ -103,6 +111,7 @@ export default {
 <style scoped>
 #home {
   padding-top: 44px;
+  height: 100vh;
 }
 .nav_bar {
   background-color: #ff8198;
@@ -113,4 +122,13 @@ export default {
   right: 0;
   z-index: 9;
 }
+.scrollContent {
+  position: absolute;
+  top: 44px;
+  bottom: 49px;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+}
+/*   */
 </style>
