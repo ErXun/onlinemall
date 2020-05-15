@@ -30,18 +30,20 @@ export default {
   methods: {
     clickEvent(index) {
       this.currentIndex = index;
+      this.$emit('clickTab',index)
     }
   }
 };
 </script>
 <style scoped>
 .product_tabbar {
-  margin-top: 10px;
   display: flex;
   justify-content: center;
   position: sticky;
-  top: 50px;
+  top: 44px;
   background-color: #fff;
+  z-index: 9;
+  padding: 10px 0;
 }
 .product_tabbar_item {
   flex: 1;
