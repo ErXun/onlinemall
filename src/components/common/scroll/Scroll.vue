@@ -1,29 +1,53 @@
 <template>
   <div ref="scrollRef">
     <div>
-      <slot>
-
-      </slot>
+      <slot></slot>
     </div>
   </div>
 </template>
 
 <script>
-import betterScroll from 'better-scroll'
+import betterScroll from "better-scroll";
 export default {
-  name: 'Scroll',
-  data(){
-    return{
-      scroll: null
+  name: "Scroll",
+  props: {
+    probeTypeValue: {
+      type: Number,
+      default: 0
     }
   },
-  mounted(){
-    this.scroll = new betterScroll(this.$refs.scrollRef,{
-      click: true
-    })
+  data() {
+    return {
+      scroll: null
+    };
+  },
+  mounted() {
+    this.scroll = new betterScroll(this.$refs.scrollRef, {
+      click: true,
+      probeType: this.probeTypeValue, // 是否实时监测滚动位置
+      pullUpLoad: true // 开启下拉加载更多
+    });
+    //  监听实施滚动
+    this.scroll.on("scroll", position => {
+      this.$emit("scrollBackTop", position);
+    });
+    // 监听向上加载更多
+    this.scroll.on("pullingUp", () => {
+      this.$emit("pullingUp");
+    });
+  },
+  methods: {
+    backTop(x, y, time) {
+      this.scroll.scrollTo(x, y, time);
+    },
+    refresh() {
+      this.scroll && this.scroll.refresh && this.scroll.refresh();
+    },
+    finishPullUp() {
+      this.scroll && this.scroll.finishPullUp && this.scroll.finishPullUp();
+    },
   }
-}
+};
 </script>
 <style scoped>
-
 </style>

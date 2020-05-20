@@ -3,17 +3,20 @@
     <nav-bar class="nav_bar">
       <div slot="center">购物街</div>
     </nav-bar>
-    <scroll class="scrollContent">
+    <scroll
+      class="scrollContent"
+      ref="scrollRef"
+      :probe-type-value="3"
+      @scrollBackTop="scrollBackTop"
+      @pullingUp="pullingUp"
+    >
       <home-swiper :banners="banners" ref="mobileSwipersRef" />
       <home-recommend-view :recommendLists="recommendLists" />
       <feature-view />
-      <product-tabbar
-        :title="['流行','新款','精选']"
-        ref="productTabbarRef"
-        @clickTab="clickTab"
-      />
+      <product-tabbar :title="['流行','新款','精选']" ref="productTabbarRef" @clickTab="clickTab" />
       <product-list :goodLists="goodsItem" />
     </scroll>
+    <back-top @click.native="backTop" v-show="isShowBackTop" />
   </div>
 </template>
 
@@ -22,6 +25,7 @@ import NavBar from "components/common/navBar/NavBar";
 import ProductTabbar from "components/context/productTabbar";
 import ProductList from "components/context/productList/ProductList";
 import Scroll from "components/common/scroll/Scroll";
+import BackTop from "components/common/backTop";
 
 import HomeSwiper from "./components/HomeSwiper";
 import HomeRecommendView from "./components/HomeRecommendView";
@@ -36,7 +40,8 @@ export default {
     FeatureView,
     ProductTabbar,
     ProductList,
-    Scroll
+    Scroll,
+    BackTop
   },
   data() {
     return {
@@ -47,7 +52,8 @@ export default {
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] }
       },
-      currentType: "pop"
+      currentType: "pop",
+      isShowBackTop: false
     };
   },
   computed: {
@@ -86,6 +92,19 @@ export default {
           break;
       }
     },
+    // 回到顶部
+    backTop() {
+      this.$refs.scrollRef.backTop(0, 0, 300);
+    },
+    // 是否隐藏回到顶部标识
+    scrollBackTop(value) {
+      this.isShowBackTop = Math.abs(value.y) > 1000;
+    },
+    // 向上加载更多
+    pullingUp() {
+      this.getHomeProductData(this.currentType);
+      this.$refs.scrollRef.scroll.refresh();
+    },
 
     /**
      * 获取网络请求
@@ -103,7 +122,9 @@ export default {
       getHomeProduct(type, page).then(res => {
         this.goods[type].list.push(...res.data.list);
         this.goods[type].page++;
+        this.$refs.scrollRef.finishPullUp()
       });
+
     }
   }
 };
@@ -129,6 +150,8 @@ export default {
   left: 0;
   right: 0;
   overflow: hidden;
+  /* height: calc(100vh - 93px);
+  overflow: hidden; */
 }
 /*   */
 </style>
