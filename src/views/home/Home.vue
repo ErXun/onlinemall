@@ -3,6 +3,12 @@
     <nav-bar class="nav_bar">
       <div slot="center">购物街</div>
     </nav-bar>
+    <product-tabbar
+      :title="['流行','新款','精选']"
+      ref="productTabbarRefOne"
+      @clickTab="clickTab"
+      v-show="isShow"
+    />
     <scroll
       class="scrollContent"
       ref="scrollRef"
@@ -10,13 +16,13 @@
       @scrollBackTop="scrollBackTop"
       @pullingUp="pullingUp"
     >
-      <home-swiper :banners="banners" ref="mobileSwipersRef" />
+      <home-swiper :banners="banners" ref="mobileSwipersRef" @imgLoadEvent="imgLoadEvent" />
       <home-recommend-view :recommendLists="recommendLists" />
       <feature-view />
-      <product-tabbar :title="['流行','新款','精选']" ref="productTabbarRef" @clickTab="clickTab" />
+      <product-tabbar :title="['流行','新款','精选']" ref="productTabbarRefTwo" @clickTab="clickTab" />
       <product-list :goodLists="goodsItem" />
     </scroll>
-    <back-top @click.native="backTop" v-show="isShowBackTop" />
+    <back-top @click.native="backTopEvent" v-show="isShowBackTop" />
   </div>
 </template>
 
@@ -31,7 +37,7 @@ import HomeSwiper from "./components/HomeSwiper";
 import HomeRecommendView from "./components/HomeRecommendView";
 import FeatureView from "./components/FeatureView";
 import { getHomeMulti, getHomeProduct } from "network/home";
-import { debounce } from 'common/utils'
+import { debounce } from "common/utils";
 export default {
   name: "home",
   components: {
@@ -54,7 +60,11 @@ export default {
         sell: { page: 0, list: [] }
       },
       currentType: "pop",
-      isShowBackTop: false
+      isShowBackTop: false,
+      tag: false,
+      isShow: false,
+      tabTop: 0,
+      pageY: 0,
     };
   },
   computed: {
@@ -73,11 +83,20 @@ export default {
   },
   // 页面活跃时，调用
   activated: function() {
-    this.$refs.mobileSwipersRef.startTimer();
+    console.log(this.pageY,'活跃');
+    // this.$refs.mobileSwipersRef.startTimer();
+    this.$refs.scrollRef.refresh()
+    this.$refs.scrollRef.backTop(0,this.pageY)
+    // this.$refs.scrollRef.refresh()
   },
   // 页面不活跃，调用
   deactivated: function() {
-    this.$refs.mobileSwipersRef.stopTimer();
+    console.log('页面不活跃');
+    // this.$refs.mobileSwipersRef.stopTimer();
+    this.pageY = this.$refs.scrollRef.getScrollY()
+  },
+  destroyed(){
+    console.log('destoryed');
   },
   methods: {
     /**
@@ -95,28 +114,34 @@ export default {
           this.currentType = "sell";
           break;
       }
+      this.$refs.productTabbarRefOne.currentIndex = index;
+      this.$refs.productTabbarRefTwo.currentIndex = index;
     },
     // 回到顶部
-    backTop() {
+    backTopEvent() {
       this.$refs.scrollRef.backTop(0, 0, 300);
     },
     // 是否隐藏回到顶部标识
     scrollBackTop(value) {
       this.isShowBackTop = Math.abs(value.y) > 1000;
+      this.isShow = Math.abs(value.y) > this.tabTop;
     },
     // 向上加载更多
     pullingUp() {
       this.getHomeProductData(this.currentType);
-      // this.$refs.scrollRef.scroll.refresh();
     },
     // 每加载完成一张图片，执行 refresh()
     imgLoad() {
-      const refresh = debounce(this.$refs.scrollRef.refresh,300)
+      const refresh = debounce(this.$refs.scrollRef.refresh, 300);
       this.$bus.$on("imgLoad", () => {
-        // this.$refs.scrollRef.refresh();
-        refresh()
+        refresh();
       });
     },
+    // 计算 tabControl 的 offsetTop
+    imgLoadEvent() {
+      this.tabTop = this.$refs.productTabbarRefTwo.$el.offsetTop;
+    },
+
     /**
      * 获取网络请求
      **/
@@ -141,17 +166,17 @@ export default {
 </script>
 <style scoped>
 #home {
-  padding-top: 44px;
+  /* padding-top: 44px; */
   height: 100vh;
 }
 .nav_bar {
   background-color: #ff8198;
   color: #fff;
-  position: fixed;
+  /* position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 9;
+  z-index: 9; */
 }
 .scrollContent {
   position: absolute;
