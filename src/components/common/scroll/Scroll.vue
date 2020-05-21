@@ -43,6 +43,7 @@ export default {
     refresh() {
       this.scroll && this.scroll.refresh && this.scroll.refresh();
     },
+    // 完成上拉加载，为下次加载做准备(scroll，默认只会加载一次)
     finishPullUp() {
       this.scroll && this.scroll.finishPullUp && this.scroll.finishPullUp();
     },
@@ -51,3 +52,4 @@ export default {
 </script>
 <style scoped>
 </style>
+

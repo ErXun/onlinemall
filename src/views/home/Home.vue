@@ -31,6 +31,7 @@ import HomeSwiper from "./components/HomeSwiper";
 import HomeRecommendView from "./components/HomeRecommendView";
 import FeatureView from "./components/FeatureView";
 import { getHomeMulti, getHomeProduct } from "network/home";
+import { debounce } from 'common/utils'
 export default {
   name: "home",
   components: {
@@ -63,9 +64,12 @@ export default {
   },
   created() {
     this.getHomeMultiData();
+  },
+  mounted() {
     this.getHomeProductData("pop");
     this.getHomeProductData("new");
     this.getHomeProductData("sell");
+    this.imgLoad();
   },
   // 页面活跃时，调用
   activated: function() {
@@ -103,9 +107,16 @@ export default {
     // 向上加载更多
     pullingUp() {
       this.getHomeProductData(this.currentType);
-      this.$refs.scrollRef.scroll.refresh();
+      // this.$refs.scrollRef.scroll.refresh();
     },
-
+    // 每加载完成一张图片，执行 refresh()
+    imgLoad() {
+      const refresh = debounce(this.$refs.scrollRef.refresh,300)
+      this.$bus.$on("imgLoad", () => {
+        // this.$refs.scrollRef.refresh();
+        refresh()
+      });
+    },
     /**
      * 获取网络请求
      **/
@@ -122,9 +133,8 @@ export default {
       getHomeProduct(type, page).then(res => {
         this.goods[type].list.push(...res.data.list);
         this.goods[type].page++;
-        this.$refs.scrollRef.finishPullUp()
+        this.$refs.scrollRef.finishPullUp();
       });
-
     }
   }
 };
