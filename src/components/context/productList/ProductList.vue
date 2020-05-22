@@ -1,6 +1,10 @@
 <template>
   <div class="product_list">
-    <product-list-item v-for="(item,index) in goodLists" :key="index" :listItem="item"></product-list-item>
+    <product-list-item
+      v-for="(item,index) in goodLists"
+      :key="index"
+      :listItem="item"
+    />
   </div>
 </template>
 
@@ -18,6 +22,8 @@ export default {
   },
   components: {
     ProductListItem
+  },
+  methods: {
   }
 };
 </script>

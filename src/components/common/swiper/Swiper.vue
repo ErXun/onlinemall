@@ -1,7 +1,7 @@
 <template>
   <div id="swiper_container">
     <!-- 图片区 -->
-    <div class="swiper" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd">
+    <div class="swiper" ref="swiper" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd">
       <slot></slot>
     </div>
     <!-- 指示区 -->
@@ -60,7 +60,8 @@ export default {
   },
   methods: {
     addItem() {
-      let swiper = document.querySelector(".swiper");
+      // let swiper = document.querySelector(".swiper");
+      let swiper = this.$refs.swiper
       this.slideCount = swiper.children.length;
       if (this.slideCount > 1) {
         let firstItem = swiper.children[this.slideCount - 1].cloneNode(true);

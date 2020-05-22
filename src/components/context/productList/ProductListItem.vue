@@ -1,5 +1,5 @@
 <template>
-  <div class="product_list_item">
+  <div class="product_list_item" @click="detailInfo">
     <img :src="listItem.show.img " alt @load="imgLoad"/>
     <div class="item_info">
       <p class="title">{{listItem.title}}</p>
@@ -20,9 +20,16 @@ export default {
       }
     }
   },
-  methods:{
-    imgLoad(){
-      this.$bus.$emit('imgLoad')
+  data(){
+    return{
+    }
+  },
+  methods: {
+    imgLoad() {
+      this.$bus.$emit("imgLoad");
+    },
+    detailInfo() {
+      this.$router.push('/detail/' + this.listItem.iid)
     }
   }
 };
@@ -40,8 +47,6 @@ export default {
   text-align: center;
 }
 .title {
-  /* width: 85%; */
-  /* margin: 0 auto; */
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

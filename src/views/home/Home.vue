@@ -83,7 +83,6 @@ export default {
   },
   // 页面活跃时，调用
   activated: function() {
-    console.log(this.pageY,'活跃');
     // this.$refs.mobileSwipersRef.startTimer();
     this.$refs.scrollRef.refresh()
     this.$refs.scrollRef.backTop(0,this.pageY)
@@ -91,12 +90,11 @@ export default {
   },
   // 页面不活跃，调用
   deactivated: function() {
-    console.log('页面不活跃');
     // this.$refs.mobileSwipersRef.stopTimer();
     this.pageY = this.$refs.scrollRef.getScrollY()
   },
   destroyed(){
-    console.log('destoryed');
+    // console.log('destoryed');
   },
   methods: {
     /**
@@ -156,6 +154,7 @@ export default {
     getHomeProductData(type) {
       let page = this.goods[type].page + 1;
       getHomeProduct(type, page).then(res => {
+        // .push(...res.data.list),一次添加多个数据
         this.goods[type].list.push(...res.data.list);
         this.goods[type].page++;
         this.$refs.scrollRef.finishPullUp();

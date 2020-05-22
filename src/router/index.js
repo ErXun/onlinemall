@@ -9,6 +9,7 @@ const Home = () => import('views/home/Home')
 const Category = () => import('views/category/Category')
 const ShopCart = () => import('views/shopCart/ShopCart')
 const Profile = () => import('views/profile/Profile')
+const Detail = () => import('views/detail/Detail')
 
 // 3.配置映射关系
 const routes = [
@@ -27,9 +28,14 @@ const routes = [
   {
     path: '/shopCart',
     component: ShopCart
-  }, {
+  },
+  {
     path: '/profile',
     component: Profile
+  },
+  {
+    path: '/detail/:id',
+    component: Detail
   },
 ]
 
