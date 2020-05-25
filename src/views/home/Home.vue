@@ -122,7 +122,7 @@ export default {
     // 是否隐藏回到顶部标识
     scrollBackTop(value) {
       this.isShowBackTop = Math.abs(value.y) > 1000;
-      this.isShow = Math.abs(value.y) > this.tabTop;
+      this.isShow = Math.abs(value.y) > this.tabTop
     },
     // 向上加载更多
     pullingUp() {
@@ -184,8 +184,7 @@ export default {
   left: 0;
   right: 0;
   overflow: hidden;
-  /* height: calc(100vh - 93px);
+  /* height: calc(100% - 93px);
   overflow: hidden; */
 }
-/*   */
 </style>
