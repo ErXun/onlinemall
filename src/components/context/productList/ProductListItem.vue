@@ -1,6 +1,7 @@
 <template>
   <div class="product_list_item" @click="detailInfo">
-    <img :src="listItem.show.img " alt @load="imgLoad"/>
+    <img v-if="listItem.show" :src="listItem.show.img " alt @load="imgLoad"/>
+    <img v-else-if="listItem.image" :src="listItem.image " alt @load="imgLoad"/>
     <div class="item_info">
       <p class="title">{{listItem.title}}</p>
       <span class="price">￥{{listItem.price}}</span>

@@ -7,6 +7,12 @@ export function getDetailInfo(iid) {
     }
   })
 }
+// 获取推荐数据
+export function getRecommendInfo() {
+  return request({
+    url: '/recommend',
+  })
+}
 
 export class Goods {
   constructor(itemInfo, columns, services) {
@@ -22,7 +28,7 @@ export class Goods {
 }
 
 export class itemParams {
-  constructor(itemParams){
+  constructor(itemParams) {
     this.set = itemParams.info.set
     this.table = itemParams.rule.tables[0]
   }

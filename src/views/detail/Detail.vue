@@ -5,21 +5,10 @@
       <detail-swiper :img-arr="imgArr"></detail-swiper>
       <detail-desc :goods="goods" />
       <detail-seller :sellerInfo="sellerInfo" />
-      <!-- <detail-seller-desc :sellerDescInfo="sellerDescInfo" @detailImgLoad="detailImgLoad" /> -->
-      <!-- <detail-params :productParams="productParams" /> -->
+      <detail-seller-desc :sellerDescInfo="sellerDescInfo" @detailImgLoad="detailImgLoad" />
+      <detail-params :productParams="productParams" />
       <user-comment :comments="comments" />
-      <ul>
-        <li>类别1</li>
-        <li>类别2</li>
-        <li>类别3</li>
-        <li>类别4</li>
-        <li>类别5</li>
-        <li>类别6</li>
-        <li>类别7</li>
-        <li>类别8</li>
-        <li>类别9</li>
-        <li>类别10</li>
-      </ul>
+      <detail-recommend :recommend-list="recommendList" />
     </scroll>
   </div>
 </template>
@@ -32,7 +21,14 @@ import DetailSeller from "./components/DetailSeller";
 import DetailSellerDesc from "./components/DetailSellerDesc";
 import DetailParams from "./components/DetailParams";
 import UserComment from "./components/UserComment";
-import { getDetailInfo, Goods, itemParams } from "network/detail";
+import DetailRecommend from "./components/DetailRecommend";
+
+import {
+  getDetailInfo,
+  Goods,
+  itemParams,
+  getRecommendInfo
+} from "network/detail";
 import Scroll from "components/common/scroll/Scroll";
 export default {
   name: "Detail",
@@ -44,7 +40,8 @@ export default {
     DetailSeller,
     DetailSellerDesc,
     DetailParams,
-    UserComment
+    UserComment,
+    DetailRecommend
   },
   data() {
     return {
@@ -54,12 +51,14 @@ export default {
       sellerInfo: {},
       sellerDescInfo: {},
       productParams: {},
-      comments: []
+      comments: [],
+      recommendList: []
     };
   },
   created() {
     this.id = this.$route.params.id;
     this.getDetail();
+    this.getRecommend();
   },
   methods: {
     /**
@@ -68,7 +67,6 @@ export default {
     // 获取商品详情数据
     getDetail() {
       getDetailInfo(this.id).then(res => {
-        console.log(res);
         let data = res.result;
         this.imgArr = data.itemInfo.topImages;
         this.goods = new Goods(
@@ -80,6 +78,14 @@ export default {
         this.sellerDescInfo = data.detailInfo;
         this.productParams = new itemParams(data.itemParams);
         this.comments = data.rate.list;
+      });
+    },
+    // 获取推荐数据
+    getRecommend() {
+      getRecommendInfo().then((res, error) => {
+        if (error) return;
+        this.recommendList = res.data.list;
+        console.log(res.data.list);
       });
     },
     /**
