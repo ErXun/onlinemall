@@ -5,8 +5,21 @@
       <detail-swiper :img-arr="imgArr"></detail-swiper>
       <detail-desc :goods="goods" />
       <detail-seller :sellerInfo="sellerInfo" />
-      <detail-seller-desc :sellerDescInfo="sellerDescInfo" @detailImgLoad="detailImgLoad" />
-      <detail-params :productParams="productParams" />
+      <!-- <detail-seller-desc :sellerDescInfo="sellerDescInfo" @detailImgLoad="detailImgLoad" /> -->
+      <!-- <detail-params :productParams="productParams" /> -->
+      <user-comment :comments="comments" />
+      <ul>
+        <li>类别1</li>
+        <li>类别2</li>
+        <li>类别3</li>
+        <li>类别4</li>
+        <li>类别5</li>
+        <li>类别6</li>
+        <li>类别7</li>
+        <li>类别8</li>
+        <li>类别9</li>
+        <li>类别10</li>
+      </ul>
     </scroll>
   </div>
 </template>
@@ -18,6 +31,7 @@ import DetailDesc from "./components/DetailDesc";
 import DetailSeller from "./components/DetailSeller";
 import DetailSellerDesc from "./components/DetailSellerDesc";
 import DetailParams from "./components/DetailParams";
+import UserComment from "./components/UserComment";
 import { getDetailInfo, Goods, itemParams } from "network/detail";
 import Scroll from "components/common/scroll/Scroll";
 export default {
@@ -29,7 +43,8 @@ export default {
     Scroll,
     DetailSeller,
     DetailSellerDesc,
-    DetailParams
+    DetailParams,
+    UserComment
   },
   data() {
     return {
@@ -38,7 +53,8 @@ export default {
       goods: {},
       sellerInfo: {},
       sellerDescInfo: {},
-      productParams: {}
+      productParams: {},
+      comments: []
     };
   },
   created() {
@@ -63,6 +79,7 @@ export default {
         this.sellerInfo = data.shopInfo;
         this.sellerDescInfo = data.detailInfo;
         this.productParams = new itemParams(data.itemParams);
+        this.comments = data.rate.list;
       });
     },
     /**

@@ -39,12 +39,14 @@ table {
   border-collapse: collapse;
 }
 table tr {
+  display: flex;
+  height: 42px;
   border-bottom: 2px solid #eee;
+  align-items: center;
 }
 .baseParams tr td {
-  width: 25%;
+  width: 20%;
   display: inline-block;
-  padding: 15px 0;
 }
 .baseParams tr:last-child {
   border-bottom: 2px solid #ccc;
@@ -52,10 +54,13 @@ table tr {
 .otherParams td {
   width: 20%;
   display: inline-block;
-  padding: 15px 0;
+  /* white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden; */
+
 }
 .otherParams tr td:last-child {
-  width: 75%;
+  width: 80%;
   color: #eb4868;
 }
 </style>
