@@ -22,21 +22,24 @@ export default {
     };
   },
   mounted() {
-    this.scroll = new betterScroll(this.$refs.scrollRef, {
-      click: true,
-      probeType: this.probeTypeValue, // 是否实时监测滚动位置
-      pullUpLoad: true // 开启下拉加载更多
-    });
-    //  监听实施滚动
-    this.scroll.on("scroll", position => {
-      this.$emit("scrollBackTop", position);
-    });
-    // 监听向上加载更多
-    this.scroll.on("pullingUp", () => {
-      this.$emit("pullingUp");
-    });
+    this.initScroll();
   },
   methods: {
+    initScroll() {
+      this.scroll = new betterScroll(this.$refs.scrollRef, {
+        click: true,
+        probeType: this.probeTypeValue, // 是否实时监测滚动位置
+        pullUpLoad: true // 开启下拉加载更多
+      });
+      //  监听实施滚动
+      this.scroll.on("scroll", position => {
+        this.$emit("scrollBackTop", position);
+      });
+      // 监听向上加载更多
+      this.scroll.on("pullingUp", () => {
+        this.$emit("pullingUp");
+      });
+    },
     backTop(x, y, time) {
       this.scroll.scrollTo(x, y, time);
     },

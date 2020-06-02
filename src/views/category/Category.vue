@@ -127,7 +127,7 @@ export default {
       pullUpLoad:true // 开启下拉加载更多
     });
     this.scroll.on('scroll', (position) => {
-      // console.log(position); //实时打印位置
+      console.log(position); //实时打印位置
     });
     this.scroll.on('pullingUp',() => {
       console.log('下拉加载更多');

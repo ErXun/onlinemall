@@ -1,14 +1,14 @@
 <template>
   <div id="detail">
-    <detail-tab></detail-tab>
-    <scroll class="content" ref="scrollRef">
-      <detail-swiper :img-arr="imgArr"></detail-swiper>
+    <detail-tab @tabClick="tabClick" ref="tabClickRef" />
+    <scroll :probe-type-value="3" class="content" ref="scrolls_ref" @scrollBackTop="scrollBackTops">
+      <detail-swiper :img-arr="imgArr" />
       <detail-desc :goods="goods" />
       <detail-seller :sellerInfo="sellerInfo" />
       <detail-seller-desc :sellerDescInfo="sellerDescInfo" @detailImgLoad="detailImgLoad" />
-      <detail-params :productParams="productParams" />
-      <user-comment :comments="comments" />
-      <detail-recommend :recommend-list="recommendList" />
+      <detail-params :productParams="productParams" ref="productParamsRef" />
+      <user-comment :comments="comments" ref="userCommentRef" />
+      <detail-recommend :recommend-list="recommendList" ref="recommendListRef" />
     </scroll>
   </div>
 </template>
@@ -30,6 +30,7 @@ import {
   getRecommendInfo
 } from "network/detail";
 import Scroll from "components/common/scroll/Scroll";
+import { debounce } from "common/utils";
 export default {
   name: "Detail",
   components: {
@@ -52,7 +53,10 @@ export default {
       sellerDescInfo: {},
       productParams: {},
       comments: [],
-      recommendList: []
+      recommendList: [],
+      paramsoffsetTopArr: [],
+      getTopY: null,
+      currentIndex: 0
     };
   },
   created() {
@@ -60,6 +64,19 @@ export default {
     this.getDetail();
     this.getRecommend();
   },
+  mounted() {
+    //  DOM 已经被渲染，但图片依然未加载完
+    this.$nextTick(() => {});
+    this.getTopY = debounce(() => {
+      this.paramsoffsetTopArr = [];
+      this.paramsoffsetTopArr.push(0);
+      this.paramsoffsetTopArr.push(this.$refs.productParamsRef.$el.offsetTop);
+      this.paramsoffsetTopArr.push(this.$refs.userCommentRef.$el.offsetTop);
+      this.paramsoffsetTopArr.push(this.$refs.recommendListRef.$el.offsetTop);
+      this.paramsoffsetTopArr.push(Number.MAX_VALUE);
+    }, 300);
+  },
+  updated() {},
   methods: {
     /**
      * 网络请求
@@ -85,14 +102,54 @@ export default {
       getRecommendInfo().then((res, error) => {
         if (error) return;
         this.recommendList = res.data.list;
-        console.log(res.data.list);
       });
     },
     /**
      * 响应事件
      */
     detailImgLoad() {
-      this.$refs.scrollRef.refresh();
+      this.$refs.scrolls_ref.refresh();
+      this.getTopY();
+    },
+    tabClick(value) {
+      this.$refs.scrolls_ref.backTop(
+        0,
+        -this.paramsoffsetTopArr[value],
+        // -(this.paramsoffsetTopArr[value] - 44),
+        0
+      );
+    },
+    scrollBackTops(value) {
+      let offTop = -value.y;
+
+      for (let i = 0; i < this.paramsoffsetTopArr.length - 1; i++) {
+        if (
+          this.currentIndex !== i &&
+          offTop >= this.paramsoffsetTopArr[i] &&
+            offTop < this.paramsoffsetTopArr[i + 1]
+        ) {
+          this.currentIndex = i;
+          console.log(this.currentIndex);
+          this.$refs.tabClickRef.currentIndex = this.currentIndex;
+        }
+      }
+
+      // if (offTop < this.paramsoffsetTopArr[1]) {
+      //   this.currentIndex = 0;
+      // } else if (
+      //   this.paramsoffsetTopArr[2] > offTop &&
+      //   offTop >= this.paramsoffsetTopArr[1]
+      // ) {
+      //   this.currentIndex = 1;
+      // } else if (
+      //   this.paramsoffsetTopArr[3] > offTop &&
+      //   offTop >= this.paramsoffsetTopArr[2]
+      // ) {
+      //   this.currentIndex = 2;
+      // } else {
+      //   this.currentIndex = 3;
+      // }
+      // console.log(this.currentIndex);
     }
   }
 };
@@ -105,8 +162,11 @@ export default {
   background-color: #fff;
 }
 .content {
-  height: calc(100% - 44px);
+  /* height: calc(100% - 44px); */
   overflow: hidden;
   background-color: #fff;
+  position: absolute;
+  top: 44px;
+  bottom: 60px;
 }
 </style>

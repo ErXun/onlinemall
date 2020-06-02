@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     getData() {
-      console.log(this.goods);
+      // console.log(this.goods);
     }
   }
 };

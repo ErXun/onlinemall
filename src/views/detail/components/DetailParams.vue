@@ -1,5 +1,6 @@
 <template>
   <div id="detailParams" v-if="Object.keys(productParams).length !== 0 ">
+  <!-- <div id="detailParams"> -->
     <div>
       <table class="baseParams">
         <tr v-for="(itemArr,index) in productParams.table" :key="index">
