@@ -10,6 +10,8 @@
       <user-comment :comments="comments" ref="userCommentRef" />
       <detail-recommend :recommend-list="recommendList" ref="recommendListRef" />
     </scroll>
+    <back-top @click.native="backTopEvent" v-show="isShowBackTop" />
+    <detail-bottom-tab class="bottomTab" @addCart="addCart"/>
   </div>
 </template>
 
@@ -22,6 +24,8 @@ import DetailSellerDesc from "./components/DetailSellerDesc";
 import DetailParams from "./components/DetailParams";
 import UserComment from "./components/UserComment";
 import DetailRecommend from "./components/DetailRecommend";
+import DetailBottomTab from "./components/DetailBottomTab";
+import { backTopMixin } from "common/mixin";
 
 import {
   getDetailInfo,
@@ -42,8 +46,10 @@ export default {
     DetailSellerDesc,
     DetailParams,
     UserComment,
-    DetailRecommend
+    DetailRecommend,
+    DetailBottomTab
   },
+  mixins: [backTopMixin],
   data() {
     return {
       id: null,
@@ -126,7 +132,7 @@ export default {
         if (
           this.currentIndex !== i &&
           offTop >= this.paramsoffsetTopArr[i] &&
-            offTop < this.paramsoffsetTopArr[i + 1]
+          offTop < this.paramsoffsetTopArr[i + 1]
         ) {
           this.currentIndex = i;
           console.log(this.currentIndex);
@@ -150,6 +156,18 @@ export default {
       //   this.currentIndex = 3;
       // }
       // console.log(this.currentIndex);
+      this.isShowBackTopFunc(value)
+    },
+    addCart(){
+      const productInfos = {}
+      productInfos.img = this.imgArr[0]
+      productInfos.title = this.goods.title
+      productInfos.desc = this.goods.desc
+      productInfos.realPrice = this.goods.realPrice
+      productInfos.id = this.id
+      this.$store.dispatch('addCart',productInfos)
+      console.log(this.$store.state.cartProducts);
+
     }
   }
 };
@@ -167,6 +185,11 @@ export default {
   background-color: #fff;
   position: absolute;
   top: 44px;
-  bottom: 60px;
+  bottom: 49px;
+  left: 0;
+  right: 0;
+}
+.bottomTab {
+  height: 49px;
 }
 </style>
