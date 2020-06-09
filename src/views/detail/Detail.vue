@@ -12,7 +12,7 @@
     </scroll>
     <back-top @click.native="backTopEvent" v-show="isShowBackTop" />
     <detail-bottom-tab class="bottomTab" @addCart="addCartEvent"/>
-    <toast :message="attention" :show="showAttention"/>
+    <!-- <toast :message="attention" :show="showAttention"/> -->
   </div>
 </template>
 
@@ -26,7 +26,7 @@ import DetailParams from "./components/DetailParams";
 import UserComment from "./components/UserComment";
 import DetailRecommend from "./components/DetailRecommend";
 import DetailBottomTab from "./components/DetailBottomTab";
-import Toast from 'components/common/toast/Toast'
+// import Toast from 'components/common/toast/Toast'
 
 import { backTopMixin } from "common/mixin";
 
@@ -53,14 +53,14 @@ export default {
     UserComment,
     DetailRecommend,
     DetailBottomTab,
-     Toast
+    //  Toast
   },
   mixins: [backTopMixin],
   data() {
     return {
       id: null,
       imgArr: [],
-      
+
       goods: {},
       sellerInfo: {},
       sellerDescInfo: {},
@@ -179,11 +179,13 @@ export default {
       // })
       // 利用映射
       this.addCart(productInfos).then(res => {
-        this.showAttention = true
-        this.attention = res
-        setTimeout(() => {
-          this.showAttention = false
-        },1000)
+        this.$toast.showAttention(res,2000)
+        // this.showAttention = true
+        // this.attention = res
+        // setTimeout(() => {
+        //   this.showAttention = false
+        //   this.attention = ''
+        // },1000)
       })
     }
   }

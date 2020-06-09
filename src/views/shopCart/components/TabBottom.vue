@@ -6,7 +6,7 @@
     </div>
     <div class="total_price">合计：￥{{totalPrice}}</div>
     <!-- <div class="buy">去计算({{cartCheckedLength}})</div> -->
-    <div class="buy">去计算({{checkedMount}})</div>
+    <div class="buy" @click="consume">去计算({{checkedMount}})</div>
   </div>
 </template>
 
@@ -25,6 +25,7 @@ export default {
   },
   mounted() {},
   computed: {
+    // 合计价格
     totalPrice() {
       let total = 0;
       let count = 0;
@@ -35,8 +36,9 @@ export default {
         }
       });
       // this.cartCheckedLength = count
-      return total;
+      return total.toFixed(2);
     },
+    // 勾选的商品数
     checkedMount() {
       return this.$store.state.cartProducts.filter(item => item.checked).length;
     },
@@ -58,6 +60,11 @@ export default {
       }
       // 此类情况，不成立
       // this.$store.state.cartProducts.forEach(item => (item.checked = !this.isChooseAll));
+    },
+    consume(){
+      if(this.checkedMount < 1){
+        this.$toast.showAttention('请先选择商品',2000)
+      }
     }
   }
 };

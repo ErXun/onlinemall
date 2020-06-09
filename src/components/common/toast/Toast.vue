@@ -6,13 +6,29 @@
 export default {
   name: "toast",
   props: {
-    message: {
-      type: String,
-      default: ""
-    },
-    show:{
-      type: Boolean,
-      default:false
+    // message: {
+    //   type: String,
+    //   default: ""
+    // },
+    // show:{
+    //   type: Boolean,
+    //   default:false
+    // }
+  },
+  data(){
+    return {
+      message: '',
+      show:false
+    }
+  },
+  methods:{
+    showAttention(res,duration=1500){
+      this.show = true
+      this.message = res
+      setTimeout(() => {
+        this.show = false
+        this.message = ''
+      },duration)
     }
   }
 };
@@ -27,5 +43,6 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%);
+  z-index: 99;
 }
 </style>
