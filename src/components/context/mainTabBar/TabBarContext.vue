@@ -1,5 +1,4 @@
 <template>
-  <div id="TabBarContext">
     <tab>
       <tab-item path="/home">
         <img slot="icon" src="~assets/img/tabBarImg/home.svg" alt />
@@ -22,7 +21,6 @@
         <div slot="text">我的</div>
       </tab-item>
     </tab>
-  </div>
 </template>
 
 <script>
@@ -42,5 +40,7 @@ export default {
 };
 </script>
 <style scoped>
-
+#tabBarContext{
+  height: 49px;
+}
 </style>

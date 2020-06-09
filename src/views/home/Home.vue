@@ -12,7 +12,8 @@
     <scroll
       class="scrollContent"
       ref="scrollRef"
-      :probe-type-value="3"
+      :probe-type-value= '3'
+      :is-load-more="true"
       @scrollBackTop="scrollBackTop"
       @pullingUp="pullingUp"
     >
@@ -119,9 +120,11 @@ export default {
     backTopEvent() {
       this.$refs.scrollRef.backTop(0, 0, 300);
     },
-    // 是否隐藏回到顶部标识
+    // 监听实施滚动
     scrollBackTop(value) {
+      // 是否隐藏回到顶部标识
       this.isShowBackTop = Math.abs(value.y) > 1000;
+      // 是是否添加导航栏
       this.isShow = Math.abs(value.y) > this.tabTop
     },
     // 向上加载更多

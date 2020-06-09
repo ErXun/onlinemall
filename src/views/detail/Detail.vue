@@ -11,7 +11,8 @@
       <detail-recommend :recommend-list="recommendList" ref="recommendListRef" />
     </scroll>
     <back-top @click.native="backTopEvent" v-show="isShowBackTop" />
-    <detail-bottom-tab class="bottomTab" @addCart="addCart"/>
+    <detail-bottom-tab class="bottomTab" @addCart="addCartEvent"/>
+    <toast :message="attention" :show="showAttention"/>
   </div>
 </template>
 
@@ -25,16 +26,20 @@ import DetailParams from "./components/DetailParams";
 import UserComment from "./components/UserComment";
 import DetailRecommend from "./components/DetailRecommend";
 import DetailBottomTab from "./components/DetailBottomTab";
+import Toast from 'components/common/toast/Toast'
+
 import { backTopMixin } from "common/mixin";
 
 import {
   getDetailInfo,
   Goods,
   itemParams,
-  getRecommendInfo
+  getRecommendInfo,
+
 } from "network/detail";
 import Scroll from "components/common/scroll/Scroll";
 import { debounce } from "common/utils";
+import {mapActions} from 'vuex'
 export default {
   name: "Detail",
   components: {
@@ -47,13 +52,15 @@ export default {
     DetailParams,
     UserComment,
     DetailRecommend,
-    DetailBottomTab
+    DetailBottomTab,
+     Toast
   },
   mixins: [backTopMixin],
   data() {
     return {
       id: null,
       imgArr: [],
+      
       goods: {},
       sellerInfo: {},
       sellerDescInfo: {},
@@ -62,7 +69,9 @@ export default {
       recommendList: [],
       paramsoffsetTopArr: [],
       getTopY: null,
-      currentIndex: 0
+      currentIndex: 0,
+      attention:'',
+      showAttention: false
     };
   },
   created() {
@@ -84,6 +93,8 @@ export default {
   },
   updated() {},
   methods: {
+    // 映射
+    ...mapActions(['addCart']),
     /**
      * 网络请求
      */
@@ -127,7 +138,6 @@ export default {
     },
     scrollBackTops(value) {
       let offTop = -value.y;
-
       for (let i = 0; i < this.paramsoffsetTopArr.length - 1; i++) {
         if (
           this.currentIndex !== i &&
@@ -135,7 +145,6 @@ export default {
           offTop < this.paramsoffsetTopArr[i + 1]
         ) {
           this.currentIndex = i;
-          console.log(this.currentIndex);
           this.$refs.tabClickRef.currentIndex = this.currentIndex;
         }
       }
@@ -158,16 +167,24 @@ export default {
       // console.log(this.currentIndex);
       this.isShowBackTopFunc(value)
     },
-    addCart(){
+    addCartEvent(){
       const productInfos = {}
       productInfos.img = this.imgArr[0]
       productInfos.title = this.goods.title
       productInfos.desc = this.goods.desc
       productInfos.realPrice = this.goods.realPrice
       productInfos.id = this.id
-      this.$store.dispatch('addCart',productInfos)
-      console.log(this.$store.state.cartProducts);
-
+      // this.$store.dispatch('addCart',productInfos).then(res => {
+      //   console.log(res);
+      // })
+      // 利用映射
+      this.addCart(productInfos).then(res => {
+        this.showAttention = true
+        this.attention = res
+        setTimeout(() => {
+          this.showAttention = false
+        },1000)
+      })
     }
   }
 };

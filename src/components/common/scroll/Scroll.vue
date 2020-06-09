@@ -14,7 +14,11 @@ export default {
     probeTypeValue: {
       type: Number,
       default: 0
-    }
+    },
+     isLoadMore: {
+      type: Boolean,
+      default: false
+    },
   },
   data() {
     return {
@@ -29,7 +33,7 @@ export default {
       this.scroll = new betterScroll(this.$refs.scrollRef, {
         click: true,
         probeType: this.probeTypeValue, // 是否实时监测滚动位置
-        pullUpLoad: true // 开启下拉加载更多
+        pullUpLoad: this.isLoadMore // 开启下拉加载更多
       });
       //  监听实施滚动
       this.scroll.on("scroll", position => {

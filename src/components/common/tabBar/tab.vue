@@ -20,7 +20,8 @@ export default {
   right: 0;
   bottom: 0;
   height: 49px;
-  background-color: #eee;
-  box-shadow: 0 -5px #eee;
+  background-color: #fff;
+  padding: 5px;
+  /* box-shadow: 0 -5px #eee; */
 }
 </style>
